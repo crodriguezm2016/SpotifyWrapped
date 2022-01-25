@@ -3,5 +3,5 @@ pandas
 plotly
 datetime
 numpy
-urllib.request
+urllib
 json
