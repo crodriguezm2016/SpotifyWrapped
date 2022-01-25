@@ -1,0 +1,7 @@
+streamlit>=0.78.0
+pandas
+plotly
+datetime
+numpy
+urllib.request
+json
