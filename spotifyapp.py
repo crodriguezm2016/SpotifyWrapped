@@ -144,13 +144,13 @@ topArtistsFig.update_layout(title = dict(text = 'Your Top {} Artists by {}'.form
 
 
 #Track Data
-trackTime = filteredData[["trackName", "msPlayed", 'artistName']]
-trackTime = trackTime.groupby(['trackName'], as_index=False).agg({'msPlayed' : 'sum', 'artistName' : 'count'})
+trackTime = df[["trackName", "msPlayed", 'artistName', 'endTime']]
+trackTime = trackTime.groupby(['trackName', 'artistName'], as_index=False).agg({'msPlayed' : 'sum', 'endTime' : 'count'})
 
 trackTime[colname] = round(timeAlter(trackTime.msPlayed),0).apply(lambda x: int(x))
 trackTime = trackTime.drop(["msPlayed"], axis = 1)
 
-trackTime = trackTime.rename(columns={'artistName' : 'numTracksListened'})
+trackTime = trackTime.rename(columns={'endTime' : 'numTracksListened'})
 trackTime = trackTime.sort_values(by = [timeSort, 'trackName'], ignore_index=True, ascending=False)
 
 topTracks = trackTime.head(numTracks)
@@ -162,11 +162,11 @@ topTracks['lastListened'] = topTracks.trackName.apply(lambda x : str(max(df.endT
 
 
 #Track Fig
-topTracksFig =  go.Figure( data=[go.Bar( x = topTracks.trackName, y = topTracks[timeSort], textposition= 'auto',
+topTracksFig =  go.Figure( data=[go.Bar( x = topTracks.trackName, y = topTracks[colname], textposition= 'auto',
                                          text = topTracks[colname].apply(lambda x : str(x) + ' ' + unitTime),
-                                         customdata=topTracks[['percentOfTotal', 'firstListened', 'lastListened', 'numTracksListened']],
+                                         customdata=topTracks[['percentOfTotal', 'firstListened', 'lastListened', 'numTracksListened', 'artistName']],
                                          hovertemplate =
-                                         '<b>%{x}</b><br>'  
+                                         '<b>%{x} by %{customdata[4]}</b><br>'  
                                          '%{customdata[0]} of Total Listening<br>' +
                                          'First Listen: %{customdata[1]}<br>' +
                                          'Latest Listen: %{customdata[2]}<br>' +
@@ -175,7 +175,7 @@ topTracksFig =  go.Figure( data=[go.Bar( x = topTracks.trackName, y = topTracks[
                                          )])
 topTracksFig.update_traces(marker_color='rgb(158,202,225)', marker_line_color='rgb(8,48,107)',
                             marker_line_width=1.5, opacity=0.8)
-topTracksFig.update_layout(title = dict(text = 'Your Top {} Tracks by {}'.format(numTracks, sortTitle), font_size = 24), 
+topTracksFig.update_layout(title = dict(text = 'Your Top {} Tracks'.format(numTracks), font_size = 24), 
                             plot_bgcolor = 'rgb(255,255,255)')
 
 
