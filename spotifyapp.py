@@ -53,7 +53,7 @@ with st.sidebar.header('1. Upload your Spotify JSON data:'):
 
 if (uploaded_file1 is None) and (uploaded_file2 is None) and (uploaded_file3 is None) and (uploaded_file4 is None):
     #st.sidebar.markdown("Currently using the WebApp Owner's data...")
-    with urlopen('https://raw.githubusercontent.com/crodriguezm2016/SpotifyWrapped/main/DemoSpotifyData/StreamingHistory0.json') as response:
+    with urlopen('https://raw.githubusercontent.com/crodriguezm2016/SpotifyWrapped/main/DemoSpotifyData/StreamingHistory3.json') as response:
         df1 = pd.json_normalize( json.load(response) )
     with urlopen('https://raw.githubusercontent.com/crodriguezm2016/SpotifyWrapped/main/DemoSpotifyData/StreamingHistory1.json') as response:
         df2 = pd.json_normalize( json.load(response) )
