@@ -248,7 +248,7 @@ st.table(topTracks)
 #     trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
 #     playlist_name = st.text_input('Playlist Name')
 #     scope = "playlist-modify-public"
-#     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id= '8b57b4aa204b4d689c0e1fc896573ae9', client_secret='674262ccbc884a42a4cb4db49516f4a0', redirect_uri='https://spotifywrapped.carlosrodriguezm.com/'))
+#     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id= , client_secret=, redirect_uri='https://spotifywrapped.carlosrodriguezm.com/'))
 #     username = sp.me()['id']
 #     sp.user_playlist_create(user = username, name=playlist_name)
 #     playlist_id = GetPlaylistID(username, playlist_name)
