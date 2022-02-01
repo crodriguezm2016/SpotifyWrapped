@@ -8,6 +8,8 @@ import ipywidgets as ipw
 import numpy as np
 from urllib.request import urlopen
 import json
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 
 
 # Functions
@@ -24,6 +26,22 @@ def toDay(x):
   return(newTime)
 
 monthsSelection = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+def GetPlaylistID(username, playlist_name):
+    playlist_id = ''
+    playlists = sp.user_playlists(username)
+    for playlist in playlists['items']:
+        if playlist['name'] == playlist_name:
+            playlist_id = playlist['id']
+    return playlist_id
+
+def GetSongID(df, trackColName, artistColName):
+    songIdList = []
+    for rows in range(len(df)):
+        result = sp.search(q=f"{df[trackColName][rows]} {df[artistColName][rows]}", limit=1, type='track')
+        songid = result['tracks']['items'][0]['id']
+        songIdList.append(songid)
+    return songIdList
 
 #Sidebar
 
@@ -220,3 +238,22 @@ st.plotly_chart(topTracksFig)
 st.table(topTracks)
 
 #New Additions
+st.subheader("Create a Playlist with Your Top Songs!")
+st.markdown("""
+Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
+If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
+""")
+if st.button('Create Your Playlist!'):
+    numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=10)
+    trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
+    playlist_name = st.text_input('Playlist Name')
+    scope = "playlist-modify-public"
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id= '8b57b4aa204b4d689c0e1fc896573ae9', client_secret='674262ccbc884a42a4cb4db49516f4a0', redirect_uri='https://spotifywrapped.carlosrodriguezm.com/'))
+    username = sp.me()['id']
+    sp.user_playlist_create(user = username, name=playlist_name)
+    playlist_id = GetPlaylistID(username, playlist_name)
+    songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
+    sp.user_playlist_add_tracks(username, playlist_id, songIdList)
+    st.write('Playlist Created!')
+else:
+    st.write('What are you waiting for!')
