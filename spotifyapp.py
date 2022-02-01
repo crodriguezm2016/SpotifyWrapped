@@ -238,22 +238,22 @@ st.plotly_chart(topTracksFig)
 st.table(topTracks)
 
 #New Additions
-st.subheader("Create a Playlist with Your Top Songs!")
-st.markdown("""
-Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
-If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
-""")
-if st.button('Create Your Playlist!'):
-    numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=10)
-    trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
-    playlist_name = st.text_input('Playlist Name')
-    scope = "playlist-modify-public"
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id= '8b57b4aa204b4d689c0e1fc896573ae9', client_secret='674262ccbc884a42a4cb4db49516f4a0', redirect_uri='https://spotifywrapped.carlosrodriguezm.com/'))
-    username = sp.me()['id']
-    sp.user_playlist_create(user = username, name=playlist_name)
-    playlist_id = GetPlaylistID(username, playlist_name)
-    songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
-    sp.user_playlist_add_tracks(username, playlist_id, songIdList)
-    st.write('Playlist Created!')
-else:
-    st.write('What are you waiting for!')
+# st.subheader("Create a Playlist with Your Top Songs!")
+# st.markdown("""
+# Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
+# If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
+# """)
+# if st.button('Create Your Playlist!'):
+#     numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=10)
+#     trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
+#     playlist_name = st.text_input('Playlist Name')
+#     scope = "playlist-modify-public"
+#     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,client_id= '8b57b4aa204b4d689c0e1fc896573ae9', client_secret='674262ccbc884a42a4cb4db49516f4a0', redirect_uri='https://spotifywrapped.carlosrodriguezm.com/'))
+#     username = sp.me()['id']
+#     sp.user_playlist_create(user = username, name=playlist_name)
+#     playlist_id = GetPlaylistID(username, playlist_name)
+#     songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
+#     sp.user_playlist_add_tracks(username, playlist_id, songIdList)
+#     st.write('Playlist Created!')
+# else:
+#     st.write('What are you waiting for!')
