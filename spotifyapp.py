@@ -250,35 +250,35 @@ st.subheader("Breakdown by Tracks:")
 st.plotly_chart(topTracksFig)
 st.table(topTracks)
 
-#New Additions
-st.subheader("Create a Playlist with Your Top Songs!")
-st.markdown("""
-Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
-If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
-""")
-numTracksPlaylist = 50 #st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
-trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
-# create oauth object
-scope = "playlist-modify-public"
-oauth = SpotifyOAuth(scope=scope,
-                    redirect_uri=config.SPOTIFY_REDIRECT_URI,
-                    client_id=config.SPOTIFY_CLIENT_ID,
-                    client_secret=config.SPOTIFY_CLIENT_SECRET)
-# retrieve auth url
-auth_url = oauth.get_authorize_url()
-st.markdown("[Click me to authenticate!](%s)" % auth_url)
-response = None
-response = [st.text_input("Click the link below, copy the URL from the new tab, paste it here, and press enter: ")]
-if response is not None:
-    code = oauth.parse_response_code(response[0])
-    token_info = oauth.get_access_token(code)
-    token = token_info["access_token"]
-    sp = spotipy.Spotify(auth=token)
-    username = sp.me()['id']
-    playlist_name = 'web app ' + str(dt_string) #st.text_input('Playlist Name')
-    sp.user_playlist_create(user = username, name=playlist_name)
-    playlist_id = GetPlaylistID(username, playlist_name)
-    songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
-    sp.user_playlist_add_tracks(username, playlist_id, songIdList)
-    st.legacy_caching.caching.clear_cache()
+# #New Additions
+# st.subheader("Create a Playlist with Your Top Songs!")
+# st.markdown("""
+# Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
+# If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
+# """)
+# numTracksPlaylist = 50 #st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
+# trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
+# # create oauth object
+# scope = "playlist-modify-public"
+# oauth = SpotifyOAuth(scope=scope,
+#                     redirect_uri=config.SPOTIFY_REDIRECT_URI,
+#                     client_id=config.SPOTIFY_CLIENT_ID,
+#                     client_secret=config.SPOTIFY_CLIENT_SECRET)
+# # retrieve auth url
+# auth_url = oauth.get_authorize_url()
+# st.markdown("[Click me to authenticate!](%s)" % auth_url)
+# response = None
+# response = [st.text_input("Click the link below, copy the URL from the new tab, paste it here, and press enter: ")]
+# if response is not None:
+#     code = oauth.parse_response_code(response[0])
+#     token_info = oauth.get_access_token(code)
+#     token = token_info["access_token"]
+#     sp = spotipy.Spotify(auth=token)
+#     username = sp.me()['id']
+#     playlist_name = 'web app ' + str(dt_string) #st.text_input('Playlist Name')
+#     sp.user_playlist_create(user = username, name=playlist_name)
+#     playlist_id = GetPlaylistID(username, playlist_name)
+#     songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
+#     sp.user_playlist_add_tracks(username, playlist_id, songIdList)
+#     response.clear()
 
