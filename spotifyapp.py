@@ -261,10 +261,10 @@ oauth = SpotifyOAuth(scope=scope,
                     client_secret=config.SPOTIFY_CLIENT_SECRET)
 # retrieve auth url
 auth_url = oauth.get_authorize_url()
+st.markdown("[Click me to authenticate!](%s)" % auth_url)
 response = None
 response = [st.text_input("Click the link below, copy the URL from the new tab, paste it here, and press enter: ")]
 if response is not None:
-    st.markdown("[Click me to authenticate!](%s)" % auth_url)
     code = oauth.parse_response_code(response[0])
     token_info = oauth.get_access_token(code)
     token = token_info["access_token"]
