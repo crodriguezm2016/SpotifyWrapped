@@ -46,6 +46,11 @@ def GetSongID(df, trackColName, artistColName):
     return songIdList
 
 #Sidebar
+# with st.sidebar.header('0. Clear Cache'):
+#     value = st.button('Clear Cache')
+#     if value:
+#         st.legacy_caching.clear_cache()
+#     value = False
 
 with st.sidebar.header('1. Upload your Spotify JSON data:'):
     uploaded_file1 = st.sidebar.file_uploader("Upload your Streaming History JSON file", key="lauren")
@@ -245,9 +250,9 @@ st.markdown("""
 Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
 If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
 """)
-numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
+numTracksPlaylist = 50 #st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
 trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
-playlist_name = st.text_input('Playlist Name', value='webapp playlist')
+playlist_name = 'web app' #st.text_input('Playlist Name')
 # create oauth object
 scope = "playlist-modify-public"
 oauth = SpotifyOAuth(scope=scope,
@@ -257,19 +262,17 @@ oauth = SpotifyOAuth(scope=scope,
 # retrieve auth url
 auth_url = oauth.get_authorize_url()
 response = None
-response = st.text_input("Click the link below, copy the URL from the new tab, paste it here, and press enter: ")
-st.markdown("[Click me to authenticate!](%s)" % auth_url)
-while response is None:
-    time.sleep(1)
-code = oauth.parse_response_code(response)
-token_info = oauth.get_access_token(code)
-token = token_info["access_token"]
-sp = spotipy.Spotify(auth=token)
-username = sp.me()['id']
-sp.user_playlist_create(user = username, name=playlist_name)
-playlist_id = GetPlaylistID(username, playlist_name)
-songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
-sp.user_playlist_add_tracks(username, playlist_id, songIdList)
-st.markdown('Clearing cache in 30 seconds')
-time.sleep(30)
-st.legacy_caching.clear_cache()
+response = [st.text_input("Click the link below, copy the URL from the new tab, paste it here, and press enter: ")]
+if response is not None:
+    st.markdown("[Click me to authenticate!](%s)" % auth_url)
+    code = oauth.parse_response_code(response[0])
+    token_info = oauth.get_access_token(code)
+    token = token_info["access_token"]
+    sp = spotipy.Spotify(auth=token)
+    username = sp.me()['id']
+    sp.user_playlist_create(user = username, name=playlist_name)
+    playlist_id = GetPlaylistID(username, playlist_name)
+    songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
+    sp.user_playlist_add_tracks(username, playlist_id, songIdList)
+    st.legacy_caching.caching.clear_cache()
+
