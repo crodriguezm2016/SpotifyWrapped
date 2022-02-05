@@ -10,7 +10,7 @@ from urllib.request import urlopen
 import json
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-
+from streamlit import caching
 
 # Functions
 def toMinutes(x):
@@ -238,12 +238,13 @@ st.plotly_chart(topTracksFig)
 st.table(topTracks)
 
 #New Additions
-# st.subheader("Create a Playlist with Your Top Songs!")
-# st.markdown("""
-# Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
-# If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
-# """)
-# if st.button('Create Your Playlist!'):
+st.subheader("Create a Playlist with Your Top Songs!")
+st.markdown("""
+Based on your specificions in your side bar, the webapp has found your top tracks and can create a playlist for you! 
+If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
+""")
+if st.button('Create Your Playlist!'):
+    caching.clear_cache() 
 #     numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=10)
 #     trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
 #     playlist_name = st.text_input('Playlist Name')
