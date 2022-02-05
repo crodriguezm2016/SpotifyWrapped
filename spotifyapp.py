@@ -244,7 +244,7 @@ Based on your specificions in your side bar, the webapp has found your top track
 If you click the button below, you will be prompted to enter a playlist name and will be redirected to authorize access for the webapp to create the playlist for you.
 """)
 if st.button('Create Your Playlist!'):
-    caching.clear_cache() 
+    st.legacy_caching.clear_cache 
 #     numTracksPlaylist = st.slider('Select how many top tracks you want included:', min_value=5, max_value=10)
 #     trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
 #     playlist_name = st.text_input('Playlist Name')
