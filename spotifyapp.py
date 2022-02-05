@@ -12,7 +12,13 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from streamlit import caching
 import config
-import time
+from datetime import datetime
+
+# datetime object containing current date and time
+now = datetime.now()
+
+# dd/mm/YY H:M:S
+dt_string = str(now.strftime("%m/%d/%Y %H:%M"))
 
 # Functions
 def toMinutes(x):
@@ -252,7 +258,7 @@ If you click the button below, you will be prompted to enter a playlist name and
 """)
 numTracksPlaylist = 50 #st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
 trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
-playlist_name = 'web app' #st.text_input('Playlist Name')
+playlist_name = 'web app ' + str(dt_string) #st.text_input('Playlist Name')
 # create oauth object
 scope = "playlist-modify-public"
 oauth = SpotifyOAuth(scope=scope,
