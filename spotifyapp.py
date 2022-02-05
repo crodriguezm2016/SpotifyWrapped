@@ -258,7 +258,6 @@ If you click the button below, you will be prompted to enter a playlist name and
 """)
 numTracksPlaylist = 50 #st.slider('Select how many top tracks you want included:', min_value=5, max_value=50)
 trackSearch = trackTime.head(numTracksPlaylist)[['trackName', 'artistName']]
-playlist_name = 'web app ' + str(dt_string) #st.text_input('Playlist Name')
 # create oauth object
 scope = "playlist-modify-public"
 oauth = SpotifyOAuth(scope=scope,
@@ -276,6 +275,7 @@ if response is not None:
     token = token_info["access_token"]
     sp = spotipy.Spotify(auth=token)
     username = sp.me()['id']
+    playlist_name = 'web app ' + str(dt_string) #st.text_input('Playlist Name')
     sp.user_playlist_create(user = username, name=playlist_name)
     playlist_id = GetPlaylistID(username, playlist_name)
     songIdList = GetSongID(trackSearch, 'trackName', 'artistName')
