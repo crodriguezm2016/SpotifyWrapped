@@ -261,9 +261,9 @@ st.table(topTracks)
 # # create oauth object
 # scope = "playlist-modify-public"
 # oauth = SpotifyOAuth(scope=scope,
-#                     redirect_uri=config.SPOTIFY_REDIRECT_URI,
-#                     client_id=config.SPOTIFY_CLIENT_ID,
-#                     client_secret=config.SPOTIFY_CLIENT_SECRET)
+#                     redirect_uri=st.secrets["SPOTIFY_REDIRECT_URI"],
+#                     client_id=st.secrets["SPOTIFY_CLIENT_ID"],
+#                     client_secret=st.secrets["SPOTIFY_CLIENT_SECRET"])
 # # retrieve auth url
 # auth_url = oauth.get_authorize_url()
 # st.markdown("[Click me to authenticate!](%s)" % auth_url)
